@@ -1,2 +1,1 @@
-# solidity_playground
-solidityのちょっとしたプログラム
+solidityのちょっとしたプログラムを保存しておく場所
