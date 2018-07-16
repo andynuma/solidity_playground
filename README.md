@@ -1,0 +1,2 @@
+# solidity_playground
+solidityのちょっとしたプログラム
