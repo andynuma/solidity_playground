@@ -21,3 +21,36 @@ const provider = new Web3.providers.HttpProvider("http://localhost:8545");
 
 //Connect to the network and save it as "web3"
 const web3 = new Web3(provider);
+
+
+//get the compiled contract's interface and bytecode
+const {interface,bytecode} = output.contract["HelloWorld"];
+
+//Convert the interface into JSON
+const abi = JSON.parse(interface);
+
+//Initialize a new contract object:
+const contract = new web3.eth.Contract(abi);
+
+const deployAndRunContract = async () => {
+  const addresses = await web3.eth.getAccounts();
+  const gasPrice = await web3.eth.getGasPrice();
+
+  try {
+    const contractInstance = await contract.deploy({
+      data: bytecode
+    }).send({
+      from: addresses[0],
+      gas: 1000000,
+      gasPrice,
+    });
+
+    console.log("Deployed at", contractInstance.options.address);
+
+    const myName = await contractInstance.methods.getMyName().call();
+    console.log("Result from blockchain:", myName);
+
+  } catch (err) {
+    console.log("Failed to deploy", err);
+  }
+}
